@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 import os
 from os import listdir
-from resultsapp.models import *
 import django
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'vceresults.settings'
+django.setup()
+
+from resultsapp.models import *
 
 
 def parse_and_save_details(details):
