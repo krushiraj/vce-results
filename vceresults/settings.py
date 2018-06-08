@@ -25,7 +25,7 @@ SECRET_KEY = 'x5w))w8!ulfr@h3vt#6fxnn_hblm_m=o)gxq9867123xgrrapn'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -120,7 +120,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/home/vceresults/vce-results/static'
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/var/www/static/',
 ]
