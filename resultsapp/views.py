@@ -15,13 +15,24 @@ grade_marks_dict = {
 
 
 def index(request):
+    context = {
+            'found': True,
+            'hidden': True,
+            'sgpa': 0,
+            'cgpa': 0,
+            'subs': [],
+            'grades': [],
+            'sub_marks': {}
+        }
     if request.method == 'POST':
         roll_no = request.POST['rollno']
-        print(roll_no)
-        student = Student.objects.get(roll_no=roll_no)
+        try:
+            student = Student.objects.get(roll_no=roll_no)
+        except:
+            context['found'] = False
+            return render(request, 'results.html', context)
         overall_result = OverallResult.objects.get(student=student)
         marks_list = MarksDetail.objects.filter(student=student)
-        print(marks_list)
         sgpa = overall_result.sem_gpa.split(': ')[-1]
         cgpa = overall_result.cum_gpa.split(': ')[-1]
         subs = [marks.subject for marks in marks_list]
@@ -30,6 +41,7 @@ def index(request):
         marks_list = enumerate(marks_list, 1)
         overall_result = overall_result.comment
         context = {
+            'found': True,
             'student': student,
             'marks_list': marks_list,
             'overall_result': overall_result,
@@ -38,9 +50,5 @@ def index(request):
             'sub_marks': sub_grades,
             'subs': subs,
             'grades': grades
-        }
-    else:
-        context = {
-            'hidden': True
         }
     return render(request, 'results.html', context)

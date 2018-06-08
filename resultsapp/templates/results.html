@@ -44,7 +44,10 @@
               </form>
         </div>
         </div>
-          {% if not hidden %}
+        {% if not found%}
+        <h2 style="text-align:center;">Please check the Hall ticket no. Enter a valid hall ticket no.</h2>
+        {% endif %}
+        {% if not hidden %}
         <div class="row">
             <div class="col-md-2 col-sm-2 col-xs-2"></div>
             <div class="table-responsive col-md-8 col-sm-8 col-xs-8">
