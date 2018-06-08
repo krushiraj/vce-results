@@ -1,0 +1,185 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>VCE RESULTS</title>
+
+    <!-- Bootstrap -->
+    <link href="{% static "bootstrap.min.css" %}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{% static "font-awesome.min.css" %}" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{% static "nprogress.css" %}" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{% static "custom.min.css" %}" rel="stylesheet">
+    <style>
+        th{
+            color: ghostwhite;
+        } 
+        td{
+            color: burlywood;
+        }
+    </style>
+  </head>
+
+  <body class="nav-md" style="scroll-behavior: smooth; overflow-x: hidden">
+      <div class="main-container">
+          <h1 style="text-align: center; color: aliceblue">Vasavi College of Engg. - Results </h1>
+        <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-1"></div>
+        <div class="col-md-4 col-sm-4 col-xs-10 form-group top_search">
+              <form class="input-group" style="text-align: center" method="post" action="{% url 'index' %}">
+                  {% csrf_token %}
+                <input name="rollno" style="border-radius:25px 0 0 25px;" class="form-control" placeholder="Enter your hall ticket no...">
+                <span class="input-group-btn">
+                  <button type="submit" value="submit" class="btn" >Get result</button>
+                </span>
+              </form>
+        </div>
+        </div>
+          {% if not hidden %}
+        <div class="row">
+            <div class="col-md-2 col-sm-2 col-xs-2"></div>
+            <div class="table-responsive col-md-8 col-sm-8 col-xs-8">
+              <table class="table table-hover">
+                <caption>Student details</caption>
+                <thead>
+                  <tr>
+                    <th>Student Name</th>
+                    <th>Father's Name</th>
+                    <th>Course</th>
+                    <th>Roll no.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                      <td>{{ student.name }}</td>
+                      <td>{{ student.father_name }}</td>
+                      <td>{{ student.course }}</td>
+                      <td>{{ student.roll_no }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <br>
+              <table class="table table-hover" style="width:100%; height: auto;">
+                <caption>Subject-wise grades</caption>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Subject code</th>
+                    <th>Subject</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Credits</th>
+                    <th>Grade</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for sno,marks in marks_list %}
+                  <tr>
+                    <td>{{ sno }}</td>
+                    <td>{{ marks.sub_code }}</td>
+                    <td>{{ marks.subject }}</td>
+                    <td>{{ marks.year }}</td>
+                    <td>{{ marks.sem }}</td>
+                    <td>{{ marks.credits }}</td>
+                    <td>{{ marks.grade }}</td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+              <br>
+              <table class="table table-hover">
+                <caption>Overall result</caption>
+                <thead>
+                  <tr>
+                    <th>Comment</th>
+                    <th>Semester-wise GPA</th>
+                    <th>Cumulative GPA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>{{ overall_result }}</td>
+                    <td>{{ sgpa }}</td>
+                    <td>{{ cgpa }}</td>
+                  </tr>
+                </tbody>
+              </table>
+             </div>
+        </div>
+          <h2 style="text-align: center;">Graphical info</h2>
+        <div class="row" style="height: 40vh">
+          <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                    <h2>All Subject Marks <small>in points</small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="canvasRadar"></canvas>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Semester GPA <small>in points</small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="canvasDoughnut-sgpa"></canvas>
+                  </div>
+              </div>
+            </div>
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Cumulative GPA <small>in points</small></h2>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <canvas id="canvasDoughnut-cgpa"></canvas>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- jQuery -->
+        <script>
+            var sub_labels = new Array();
+            {% for sub in subs %}
+            sub_labels.push("{{ sub }}")
+            {% endfor %}
+            var sub_grades = new Array();
+            {% for grade in grades %}
+            sub_grades.push("{{ grade }}")
+            {% endfor %}
+            var ref_grades = new Array(sub_grades.length)
+            ref_grades[0] = 0;
+            for(var i = 1; i < sub_grades.length; i++)
+            {
+                ref_grades[i] = 10;
+            }
+            var sgpa_data = [{{ sgpa }}, (10 - {{ sgpa }}).toFixed(1)]
+            var cgpa_data = [{{ cgpa }}, (10 - {{ cgpa }}).toFixed(1)]
+        </script>
+
+        <script src="{% static "jquery.min.js" %}"></script>
+        <!-- Bootstrap -->
+        <script src="{% static "bootstrap.min.js" %}"></script>
+        <!-- Chart.js -->
+        <script src="{% static "Chart.min.js" %}"></script>
+        <!-- Custom Theme Scripts -->
+        <script src="{% static "custom.js" %}"></script>
+  </body>
+</html>
