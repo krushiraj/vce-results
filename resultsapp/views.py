@@ -16,7 +16,7 @@ grade_marks_dict = {
 
 def index(request):
     context = {
-            'found': False,
+            'found': True,
             'hidden': True,
             'sgpa': 0,
             'cgpa': 0,
@@ -29,6 +29,7 @@ def index(request):
         try:
             student = Student.objects.get(roll_no=roll_no)
         except:
+            context['found'] = False
             return render(request, 'results.html', context)
         overall_result = OverallResult.objects.get(student=student)
         marks_list = MarksDetail.objects.filter(student=student)
