@@ -110,17 +110,18 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{ overall_result }}</td>
                     <td>{{ sgpa }}</td>
-                    <td>{{ cgpa }}</td>
+                    <td>CGPA can't be calculated</td>
+                    <td>{{ overall_result }}</td>
                   </tr>
                 </tbody>
               </table>
+               <p>The results are copy of the values grabbed from vce.ac.in, there might be mistakes in calculation of SGPA due to difference in credits. Please take a note of this</p>
              </div>
         </div>
-          <h2 style="text-align: center;">Graphical info</h2>
-        <div class="row" style="height: 40vh">
-          <div class="col-md-4 col-sm-4 col-xs-12">
+        <h2 style="text-align: center;">Graphical info</h2>
+        <div class="row">
+          <div class="col-xs-12 col-xs-offset-0 col-sm-12 col-sm-offset-0 col-md-6 col-md-offset-3">
               <div class="x_panel">
                   <div class="x_title">
                     <h2>All Subject Marks <small>in points</small></h2>
@@ -131,6 +132,9 @@
                   </div>
               </div>
             </div>
+        </div>
+          <div class="row">
+            <div class="col-md-2 col-sm-2"></div>
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel">
                   <div class="x_title">
@@ -153,6 +157,7 @@
                   </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
         {% endif %}

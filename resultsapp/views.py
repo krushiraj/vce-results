@@ -11,6 +11,7 @@ grade_marks_dict = {
     'D': 5,
     'E': 4,
     'F': 0,
+    'Ab': 0,
 }
 
 
