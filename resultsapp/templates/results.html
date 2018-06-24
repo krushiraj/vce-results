@@ -110,8 +110,14 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{{ sgpa }}</td>
-                    <td>CGPA can't be calculated</td>
+                    <td id="sgpa">{{ sgpa }}</td>
+                    <td>
+                      <form >
+                        <p>Enter your CGPA upto last semester
+                          <input id="cgpa-prev" type="text"/>
+                          <input type="button" value="Calculate new CGPA" onclick="calc_cgpa();">
+                        </p>
+                      </form></td>
                     <td>{{ overall_result }}</td>
                   </tr>
                 </tbody>
@@ -180,6 +186,15 @@
             }
             var sgpa_data = [{{ sgpa }}, (10 - {{ sgpa }}).toFixed(1)]
             var cgpa_data = [{{ cgpa }}, (10 - {{ cgpa }}).toFixed(1)]
+
+            function calc_cgpa(){
+                var cgpa = parseFloat(document.getElementById('cgpa-prev').value);
+                var sgpa = parseFloat(document.getElementById('sgpa').innerHTML);
+                var new_cgpa = cgpa * 5;
+                new_cgpa += sgpa;
+                new_cgpa /= 6;
+                alert("CGPA after 6 semesters is "+new_cgpa.toFixed(2));
+            }
         </script>
 
         <script src="{% static "jquery.min.js" %}"></script>
