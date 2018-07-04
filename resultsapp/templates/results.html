@@ -115,12 +115,10 @@
                       {% if cgpa != '0' %}
                       {{ cgpa }}
                       {% else %}
-                      <form >
-                        <p>Enter your CGPA upto last semester
-                          <input id="cgpa-prev" type="text"/>
-                          <input type="button" value="Calculate new CGPA" onclick="calc_cgpa();">
-                        </p>
-                      </form>
+                      <p>Enter your CGPA upto last semester
+                        <input id="cgpa-prev" type="text" onKeyDown="if(event.keyCode==13) calc_cgpa();"/>
+                        <input type="button" value="Calculate new CGPA" onclick="calc_cgpa();">
+                      </p>
                       {% endif %}
                     </td>
                     <td>{{ overall_result }}</td>
