@@ -111,13 +111,18 @@
                 <tbody>
                   <tr>
                     <td id="sgpa">{{ sgpa }}</td>
-                    <td>
+                    <td id="cgpa">
+                      {% if cgpa != '0' %}
+                      {{ cgpa }}
+                      {% else %}
                       <form >
                         <p>Enter your CGPA upto last semester
                           <input id="cgpa-prev" type="text"/>
                           <input type="button" value="Calculate new CGPA" onclick="calc_cgpa();">
                         </p>
-                      </form></td>
+                      </form>
+                      {% endif %}
+                    </td>
                     <td>{{ overall_result }}</td>
                   </tr>
                 </tbody>
