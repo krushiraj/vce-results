@@ -34,8 +34,6 @@ def index(request):
             return render(request, 'results.html', context)
         overall_result = OverallResult.objects.get(student=student)
         marks_list = MarksDetail.objects.filter(student=student)
-        import ipdb
-        ipdb.set_trace()
         sgpa = overall_result.sem_gpa.split(': ')[-1]
         cgpa = overall_result.cum_gpa.split(': ')[-1]
         subs = [marks.subject for marks in marks_list]
